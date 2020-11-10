@@ -1,0 +1,11 @@
+<div class="g_echart">
+    <div class="echart_wrapper">
+        <div class="title-wrapper">
+            <h1 class="title" v-text="title"></h1>
+            <h6 class="subtitle" v-text="title2"></h6>
+        </div>
+        <div class="alist">
+            <product-show v-for="(item, index) in opt" :key="index" :obj="item">123123</product-show>
+        </div>
+    </div>
+</div>

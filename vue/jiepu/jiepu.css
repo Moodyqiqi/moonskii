@@ -1,0 +1,161 @@
+body {
+    padding-right: 0 !important;
+}
+
+.bg {
+    background-color: #0c162f !important;
+}
+
+.ivu-select-selection {
+    background-color: transparent !important;
+}
+
+.ivu-input {
+    background-color: transparent !important;
+    border: 1px solid #fff;
+}
+
+.ivu-table {
+    background-color: transparent !important;
+}
+
+.ivu-table-header th {
+    background-color: transparent !important;
+}
+
+.ivu-table td {
+    background-color: transparent !important;
+}
+
+.ivu-table-tip {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.ivu-table-row-hover {
+    background-color: skyblue;
+}
+
+.ivu-poptip-body-content {
+    color: black;
+}
+
+.tableCss .ivu-table div table thead tr th {
+    background-color: rgb(14, 29, 58);
+    color: white;
+    font-weight: bold;
+    border-bottom: 0;
+}
+
+.tableCss .ivu-table div table tbody tr td {
+    background-color: rgb(14, 29, 58);
+    color: white;
+    border-bottom: 0;
+}
+
+.tableCss .ivu-table div table tbody .ivu-table-row-hover td {
+    background-color: skyblue;
+    border-bottom: 0;
+}
+
+
+/* ivu-table-row-highlight */
+
+.tableCss .ivu-table div table tbody .ivu-table-row-highlight td {
+    background-color: rgb(40, 48, 71) !important;
+    border-bottom: 0;
+}
+
+.ivu-date-picker-with-range .ivu-picker-panel-content {
+    color: black;
+}
+
+.ivu-input {
+    color: white;
+}
+
+.ivu-poptip-body {
+    color: black;
+}
+
+.ivu-poptip-inner .ivu-poptip-body .ivu-poptip-body-content p div input {
+    color: black;
+}
+
+.ivu-modal {
+    top: 0 !important;
+}
+
+.ivu-modal-fullscreen {
+    top: 0 !important;
+}
+
+body {
+    background-color: rgb(14, 29, 58);
+}
+
+.mb24 {
+    margin-bottom: 24px;
+}
+
+table.vtop td {
+    vertical-align: top;
+}
+
+.full-page-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+}
+
+.a-table {
+    margin: 10px 0;
+}
+
+.a-table td,
+.a-table th {
+    padding: 8px;
+    font-size: 13px;
+    text-align: center;
+}
+
+.tableCss .ivu-table-border:after,
+.tableCss .ivu-table:before {
+    display: none;
+}
+
+.flex-wrap .center {
+    flex: 1;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #0e1d3a;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: #ffffff;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.subtitle2 {
+    font-size: 16px;
+    color: #ffffff;
+    line-height: 30px;
+    text-align: center;
+}
+
+
+/*
+.a-table1 tbody tr td:first-child {
+    font-weight: bold;
+}
+
+.a-table1 tbody tr:nth-child(3n+1) {
+    font-weight: bold;
+    background-color: rgba(255, 169, 0, .73);
+}
+*/

@@ -1,0 +1,18 @@
+<div class="wrapper">
+    <div class="left">
+        <h5 v-text="obj.name"></h5>
+        <div class="item" v-for="(item, index) in obj.data">
+            <div class="label" v-text="item.label"></div>
+            <div class="color">
+                <span v-if="item.color" :style="{backgroundColor: item.color}"></span>
+            </div>
+            <div class="value" v-text="item.value"></div>
+        </div>
+    </div>
+    <div class="center">
+        <div class="bar-wrapper" :id="barId"></div>
+    </div>
+    <div class="right">
+        <div class="gauge-wrapper" :id="gaugeId"></div>
+    </div>
+</div>

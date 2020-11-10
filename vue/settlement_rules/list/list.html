@@ -1,0 +1,274 @@
+<div class="global_list settlement_rules-list">
+    <template>
+        <Row>
+            <i-col span="20" offset="2">
+                <!-- 第二步骤显示与否       -->
+                <!-- <div v-if="isSecondStep && !importExcel"> -->
+                <div class="rule_outer_css padding_set top_set"> <span
+                        style="font-weight: bolder; font-size: larger;">员工信息：</span>
+                    <span> {{ staffsNameString }}</span>
+                    <span v-if="String(staffs).length > 240" style="color: #0099ff;margin-left:10px;cursor: pointer;"
+                        @click="staffsNameShowAll=!staffsNameShowAll">
+                        <span v-if="staffsNameShowAll==0">
+                            展开
+                            <Icon type="ios-arrow-down" />
+                        </span>
+                        <span v-else>
+                            隐藏
+                            <Icon type="ios-arrow-up" />
+                        </span>
+                    </span>
+                </div>
+                <!-- <div class="tip_style padding_set top_set  rule_outer_css"> <span style="font-weight: bolder; font-size: larger;">提示信息：</span> XXXXXXXXXXX </div> -->
+                <Row class="top_set">
+                    <i-col span="24" class="">
+                        <div style="padding: 0 0 20px;display: flex; flex-wrap: nowrap;">
+                            <div style="flex: 0 0 100px;line-height: 32px;">
+                                <Icon :size="16" type="ivu-icon ivu-icon-md-arrow-dropdown-circle"
+                                    style="color: green;">
+                                </Icon>
+                                <span class="title_style"> 模式添加</span>
+                            </div>
+
+
+                            <div style="flex: 1;padding-left: 40px;;">
+                                <span style="color: green; cursor: pointer;font-size: 32px;line-height: 32px; "
+                                    @click="edit(0)">+</span>
+                            </div>
+
+                            <div style="flex: 1;text-align: right;">
+                                <Button @click="confirm" type="primary" :disabled='items.length <= 0'>发布</Button>
+                            </div>
+                        </div>
+                        <div class="a-row" style="">
+                            <div class="a-row-col">
+                                <h5 class="subtitle">
+                                    <Icon type="md-home" class="icon1" />小时模式</h5>
+                            </div>
+                            <div class="a-row-col">
+                                <h5 class="subtitle">
+                                    <Icon type="md-flower" class="icon2" />返费模式</h5>
+                            </div>
+                        </div>
+                        <div class="a-row" style="margin-top: 10px;margin-bottom: 20px;">
+                            <div class="rule_outer_css padding_set a-row-col" style="min-height: 80px;">
+
+                                <div style="height: 20px; font-weight: bold;">
+                                    <i-col span="6">
+                                        结算方式
+                                    </i-col>
+                                    <i-col span="5">
+                                        结算规则
+                                    </i-col>
+                                    <i-col span="8">
+                                        规则名称
+                                    </i-col>
+
+                                    <i-col span="4">
+                                        操作
+                                    </i-col>
+                                </div>
+                                <div style="height: 20px; " class="lineStyle" v-for="item in Type1_Items">
+                                    <i-col span="6">
+                                        <span>{{item.SettlementType_Title}}</span>
+                                    </i-col>
+                                    <i-col span="5">
+                                        <span>{{item.RulType_Title}}</span>
+                                    </i-col>
+                                    <i-col span="8">
+                                        <span> {{item.Title}}</span>
+                                    </i-col>
+
+                                    <i-col span="4">
+                                        <span @click="edit(item)" style=" margin-right: 10px; cursor: pointer;">
+                                            <Icon type="ios-create-outline" style="color: blue;" />编辑</span>
+                                        <span @click="remove(item)" style=" cursor: pointer;">
+                                            <Icon type="ios-trash" style="color: red;" />删除</span>
+
+                                    </i-col>
+                                </div>
+                            </div>
+                            <div class="rule_outer_css padding_set a-row-col">
+                                <div style="height: 20px; font-weight: bold;">
+                                    <i-col span="6">
+                                        结算方式
+                                    </i-col>
+                                    <i-col span="5">
+                                        结算规则
+                                    </i-col>
+                                    <i-col span="8">
+                                        规则名称
+                                    </i-col>
+
+                                    <i-col span="4">
+                                        操作
+                                    </i-col>
+                                </div>
+                                <div style="height: 20px; " class="lineStyle" v-for="item in Type2_Items">
+                                    <i-col span="6">
+                                        <span>{{item.SettlementType_Title}}</span>
+                                    </i-col>
+                                    <i-col span="5">
+                                        <span>{{item.RulType_Title}}</span>
+                                    </i-col>
+                                    <i-col span="8">
+                                        <span> {{item.Title}}</span>
+                                    </i-col>
+
+                                    <i-col span="4">
+                                        <span @click="edit(item)" style=" margin-right: 10px; cursor: pointer;">
+                                            <Icon type="ios-create-outline" style="color: blue;" />编辑</span>
+                                        <span @click="remove(item)" style=" cursor: pointer;">
+                                            <Icon type="ios-trash" style="color: red;" />删除</span>
+
+                                    </i-col>
+                                </div>
+                            </div>
+                        </div>
+                    </i-col>
+                </Row>
+            </i-col>
+        </Row>
+    </template>
+    <BackTop></BackTop>
+    <Modal v-model="editItemVisible" title="编辑" width="60" :loading="true" @on-ok="asyncOK">
+        <edit-wrap :visible="editItemVisible" :id="editItemId" :bid="editItemBid" @close="handleEditClose"></edit-wrap>
+
+        <div slot="footer"></div>
+    </Modal>
+
+
+    <!--    <div class="clearfix t_btns" style="margin-bottom: 20px;">-->
+    <!--        <Input search type="text" enter-button="查询" v-model="search.Keyword" @on-search="listSearch" @on-click="listSearch"   placeholder="关键字..." style="width: 250px;float: left;" />-->
+    <!--        <Button type="primary" @click="edit(0)">新增</Button>-->
+    <!--        <Button type="primary" @click="drawerFlag = true">高级查询</Button>-->
+    <!--        <Button type="error" @click="removes" :disabled="!(selectedKeys.length > 0)">批量删除</Button>-->
+    <!--        <Button type="primary" @click="exportExcel">数据导出</Button>-->
+    <!--        <Button type="primary"><a :href="`#/public/file_import?method=sixiang/settlement_rules/importExcel`" target="_blank">数据导入</a></Button>-->
+    <!--    </div>-->
+    <!--    <Drawer :transfer="false" title="查询条件" :mask-closable="false" draggable width="30" v-model="drawerFlag">-->
+    <!--        <div class="search_list">-->
+    <!--            <Form label-position="top" class="search_form">-->
+    <!--                <FormItem label="关键字">-->
+    <!--                    <jci-input v-model="search.Keyword" placeholder="关键字..."/>-->
+    <!--                </FormItem>-->
+    <!--                <FormItem label="ID">-->
+    <!--                    <jci-number style="margin-bottom: 10px;" v-model="search.startID" placeholder="请输入开始ID">-->
+    <!--                    </jci-number>-->
+    <!--                    <jci-number v-model="search.endID" placeholder="请输入结束ID">-->
+    <!--                    </jci-number>-->
+    <!--                </FormItem>-->
+    <!--                <FormItem label="员工ID">-->
+    <!--                    <jci-select url="sixiang/settlement_rules/getEmployeeIDSelect2ToSearch" :model="$route.query.EmployeeID" :title="$route.query.EmployeeID ? $route.query.EmployeeID.split('|')[1] : ''" name="settlement_rules_EmployeeID" v-model="search.EmployeeID">-->
+    <!--                    </jci-select>-->
+    <!--                </FormItem>-->
+    <!--                <FormItem label="结算规则类型">-->
+    <!--                    <jci-select url="sixiang/settlement_rules/getSettlementRuleTypeSelect2ToSearch" :model="$route.query.SettlementRuleType" :title="$route.query.SettlementRuleType ? $route.query.SettlementRuleType.split('|')[1] : ''" name="settlement_rules_SettlementRuleType" v-model="search.SettlementRuleType">-->
+    <!--                    </jci-select>-->
+    <!--                </FormItem>-->
+    <!--                <FormItem label="出勤天数">-->
+    <!--                    <jci-number style="margin-bottom: 10px;" v-model="search.startAttendanceDays" placeholder="请输入开始出勤天数">-->
+    <!--                    </jci-number>-->
+    <!--                    <jci-number v-model="search.endAttendanceDays" placeholder="请输入结束出勤天数">-->
+    <!--                    </jci-number>-->
+    <!--                </FormItem>-->
+    <!--                <FormItem label="打卡天数">-->
+    <!--                    <jci-number style="margin-bottom: 10px;" v-model="search.startPunchInDays" placeholder="请输入开始打卡天数">-->
+    <!--                    </jci-number>-->
+    <!--                    <jci-number v-model="search.endPunchInDays" placeholder="请输入结束打卡天数">-->
+    <!--                    </jci-number>-->
+    <!--                </FormItem>-->
+    <!--                <FormItem label="金额">-->
+    <!--                    <jci-number style="margin-bottom: 10px;" v-model="search.startSum" placeholder="请输入开始金额">-->
+    <!--                    </jci-number>-->
+    <!--                    <jci-number v-model="search.endSum" placeholder="请输入结束金额">-->
+    <!--                    </jci-number>-->
+    <!--                </FormItem>-->
+    <!--                <FormItem label="要求在职号数">-->
+    <!--                    <jci-number style="margin-bottom: 10px;" v-model="search.startWorkingHours" placeholder="请输入开始要求在职号数">-->
+    <!--                    </jci-number>-->
+    <!--                    <jci-number v-model="search.endWorkingHours" placeholder="请输入结束要求在职号数">-->
+    <!--                    </jci-number>-->
+    <!--                </FormItem>-->
+    <!--                <FormItem label="大于在职时间/倍数">-->
+    <!--                    <jci-number style="margin-bottom: 10px;" v-model="search.startWorkingHoursMultiple" placeholder="请输入开始大于在职时间/倍数">-->
+    <!--                    </jci-number>-->
+    <!--                    <jci-number v-model="search.endWorkingHoursMultiple" placeholder="请输入结束大于在职时间/倍数">-->
+    <!--                    </jci-number>-->
+    <!--                </FormItem>-->
+    <!--                <FormItem label="员工小时/金额">-->
+    <!--                    <jci-number style="margin-bottom: 10px;" v-model="search.startStaffHoursAmount" placeholder="请输入开始员工小时/金额">-->
+    <!--                    </jci-number>-->
+    <!--                    <jci-number v-model="search.endStaffHoursAmount" placeholder="请输入结束员工小时/金额">-->
+    <!--                    </jci-number>-->
+    <!--                </FormItem>-->
+    <!--                <FormItem label="在职大于天数或倍数">-->
+    <!--                    <jci-number style="margin-bottom: 10px;" v-model="search.startWorkingDays" placeholder="请输入开始在职大于天数或倍数">-->
+    <!--                    </jci-number>-->
+    <!--                    <jci-number v-model="search.endWorkingDays" placeholder="请输入结束在职大于天数或倍数">-->
+    <!--                    </jci-number>-->
+    <!--                </FormItem>-->
+    <!--                <FormItem label="结算周期/金额">-->
+    <!--                    <jci-number style="margin-bottom: 10px;" v-model="search.startSettlementAmount" placeholder="请输入开始结算周期/金额">-->
+    <!--                    </jci-number>-->
+    <!--                    <jci-number v-model="search.endSettlementAmount" placeholder="请输入结束结算周期/金额">-->
+    <!--                    </jci-number>-->
+    <!--                </FormItem>-->
+    <!--                <FormItem label="创建时间">-->
+    <!--                    <jci-datepicker style="margin-bottom: 10px;" v-model="search.startCreateDate" type="date" placeholder="请输入开始创建时间">-->
+    <!--                    </jci-datepicker>-->
+    <!--                    <jci-datepicker v-model="search.endCreateDate" type="date" placeholder="请输入结束创建时间">-->
+    <!--                    </jci-datepicker>-->
+    <!--                </FormItem>-->
+    <!--                <FormItem label="创建人">-->
+    <!--                    <jci-number style="margin-bottom: 10px;" v-model="search.startCreateUserID" placeholder="请输入开始创建人">-->
+    <!--                    </jci-number>-->
+    <!--                    <jci-number v-model="search.endCreateUserID" placeholder="请输入结束创建人">-->
+    <!--                    </jci-number>-->
+    <!--                </FormItem>-->
+    <!--                <FormItem label="更新日期">-->
+    <!--                    <jci-datepicker style="margin-bottom: 10px;" v-model="search.startUpdateDate" type="date" placeholder="请输入开始更新日期">-->
+    <!--                    </jci-datepicker>-->
+    <!--                    <jci-datepicker v-model="search.endUpdateDate" type="date" placeholder="请输入结束更新日期">-->
+    <!--                    </jci-datepicker>-->
+    <!--                </FormItem>-->
+    <!--                <FormItem label="更新人">-->
+    <!--                    <jci-number style="margin-bottom: 10px;" v-model="search.startUpdateUserID" placeholder="请输入开始更新人">-->
+    <!--                    </jci-number>-->
+    <!--                    <jci-number v-model="search.endUpdateUserID" placeholder="请输入结束更新人">-->
+    <!--                    </jci-number>-->
+    <!--                </FormItem>-->
+    <!--                <FormItem label="所属公司">-->
+    <!--                    <jci-number style="margin-bottom: 10px;" v-model="search.startCompanyID" placeholder="请输入开始所属公司">-->
+    <!--                    </jci-number>-->
+    <!--                    <jci-number v-model="search.endCompanyID" placeholder="请输入结束所属公司">-->
+    <!--                    </jci-number>-->
+    <!--                </FormItem>-->
+    <!--            </Form>-->
+    <!--            <div class="search_btns">-->
+    <!--                <Button type="primary" @click="clearSearch">重置</Button>-->
+    <!--                <Button type="primary" @click="listSearch">查询</Button>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </Drawer>-->
+    <!--    <jci-table :spinShow="spinShow" border stripe :current="Number(search.PageIndex)+1" :pageSize="Number(search.onePageCount)" :spinShow="spinShow" :columns="columns" :data="items" :PageTotal="PageTotal" @on-selection-change="selectItem" @on-change="pagechange" @on-page-size-change="pageSizechange">-->
+    <!--        <template slot-scope="{ row }" slot="Deleted">-->
+    <!--            <span v-if="row.Deleted" style="color:green;">是</span>-->
+    <!--            <span v-else style="color:red;">否</span>-->
+    <!--        </template>-->
+
+    <!--        <template slot-scope="{ row }" slot="action">-->
+    <!--            <div class="actions clearfix">-->
+    <!--                <Button type="primary" @click="edit(row)">编辑</Button>-->
+    <!--                <Button type="error" @click="remove(row)">删除</Button>-->
+    <!--            </div>-->
+    <!--        </template>-->
+    <!--    </jci-table>-->
+    <Modal v-model="editData.flag" title="编辑" width="60" :loading="true" @on-ok="asyncOK">
+        <div class="edit_wrap">
+            <edit-template v-if="editData.flag" ref="edit" :isPage="false" :pageId="editData.id" :id="editData.id">
+            </edit-template>
+        </div>
+    </Modal>
+    <BackTop></BackTop>
+</div>

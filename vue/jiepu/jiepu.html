@@ -1,0 +1,337 @@
+<div class="global_list sixiang_employee_data-list full-page-wrapper" :style="FullPageStyle">
+    <!-- 头部 -->
+    <div style="display: flex; justify-content: center; height: 95px; width: 100%; background:  url('./js//assets/images/topBg.png') no-repeat center center ">
+        <span style=" line-height: 90px ; font-size: 16px; font-weight: bold; color: #65e1fd; letter-spacing:1px">{{jsonLanguge.bigTitle[model11]}}
+        </span></div>
+    <div class="flex-wrap" style="min-height: 750px;display: flex;flex-wrap: nowrap;">
+        <div class="left" :style="LeftStyle">
+            <div style="padding: 10px ">
+                <span> {{jsonLanguge.total[model11]}}</span>
+                <div style="display: flex; margin-top: 10px; margin-bottom: 10px;">
+
+                    <DatePicker class="selects" type="datetimerange" @on-change="timeChange" format="yyyy-MM-dd" v-model="LeftDatePicker" :placeholder="jsonLanguge.placeDataHold[model11]" style="width: 360px; margin-left: 10px;">
+                    </DatePicker>
+                    <div style="flex: 1;text-align: right;padding-right: 20px;padding-top: 5px;">
+                        <span style="font-size: 20px; font-weight: bolder; float: right;"> {{ currentTime  }}
+                        </span>
+                    </div>
+                </div>
+                <Row style="margin-top: 20px;">
+                    <i-col span="12">
+                        <div id="main1" style="width: 400px; height: 300px;margin: 10px 0;"></div>
+                    </i-col>
+                    <i-col span="12">
+                        <div id="main" style="width: 400px; height: 300px;margin: 10px 0"></div>
+                    </i-col>
+                </Row>
+
+                <div style="padding-top: 20px;margin-top: 15px;">
+                    <table bordercolor="white" border="1" width="100%" style="border: 1p solid #ccc;" class="vtop">
+                        <tr>
+                            <td style="padding: 10px;">
+
+                                <div style="color: #27b87a;">
+                                    OEE Schedule -% </div>
+
+                                <div style="font-size: 24px; text-align: center;display: flex; ">
+                                    <chart-pie :num="leftChart.OEE" style="flex: 0 0 200px;" :colors="OEEColor" width="200px">
+                                    </chart-pie>
+                                    <div style="padding-top: 30px;">{{leftChart.OEE }}%</div>
+                                </div>
+                            </td>
+                            <td style="padding: 10px;">
+                                <div style="color: #27b87a;">
+                                    Total Downtime -Hours </div>
+                                <div style="font-size: 24px; text-align: center;display: flex; ">
+                                    <div style="flex: 0 0 200px;">
+                                    </div>
+                                    <div style="padding-top: 30px;"> {{leftChart.DownTime}}h</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px;">
+                                <div style="color: #27b87a;">
+                                    FPY -% </div>
+                                <div style="font-size: 24px; text-align: center;display: flex; ">
+                                    <chart-pie :num="leftChart.FPY" style="flex: 0 0 200px;" :colors="FPYColor" width="200px">
+                                    </chart-pie>
+                                    <div style="padding-top: 30px;">{{leftChart.FPY }}%</div>
+                                </div>
+                            </td>
+                            <td style="padding: 10px;">
+                                <div style="color: #27b87a;  ">
+                                    Scrap -% </div>
+                                <div style="font-size: 24px; text-align: center;display: flex; ">
+                                    <chart-pie :num="leftChart.Scrap" style="flex: 0 0 200px;" :colors="ScrapColor" width="200px">
+                                    </chart-pie>
+                                    <div style="padding-top: 30px;">{{leftChart.Scrap }}%</div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="center">
+            <span> {{jsonLanguge.machineList[model11]}}</span>
+            <div style="display: flex; margin-top: 10px;">
+
+
+                <Date-picker class="selects" type="datetimerange" @on-change="timeChange1" format="yyyy-MM-dd" :placeholder="jsonLanguge.placeDataHold[model11]" style="width: 360px ; margin-left: 10px;max-width: 100%;" v-model="CenterDatePicker">
+                </Date-picker>
+
+                <div style="flex: 1;text-align: right;padding-right: 20px;">
+                    <Button style="background-color: #cf9f26; color: white;" @click="mailSet">
+                        <Icon type="ios-mail-outline" size="22"
+                            style="color: #c064f8 ; margin-right: 3px;line-height: 1.5;" />
+                        <span>{{jsonLanguge.mailConfig[model11]}}</span>
+                    </Button>
+                    <Button style="background-color: #cf9f26; color: white;">
+                        <span @click="conformsss">
+                            <Icon type="md-swap" style="color: #c064f8; margin-right: 3px;" size="22" />
+                            {{jsonLanguge.refresh[model11]}}
+                        </span>
+
+                        <Poptip v-model="popVisible" :title="jsonLanguge.reFreshTitle[model11]"
+                            :cancelText="jsonLanguge.cancle[model11]" :okText="jsonLanguge.ok[model11]" @on-ok="ok"
+                            @on-cancel="cancel" :popper-class="popClass">
+                            <Icon type="ios-arrow-down" />
+                            <p slot="content">
+                                <span style="line-height: 32px;"> {{jsonLanguge.timeInner[model11]}} </span>
+                                <Input v-model="timeNumber" :min='1' placeholder="default size" type="number"
+                                    style="width:100px;" />
+                                <span style="margin-left: 20px; line-height: 32px;"> {{jsonLanguge.time[model11]}}
+                                </span>
+                                <br />
+                                <Button style="margin-top: 10px;" type="primary" @click="conformsss">
+                                    {{jsonLanguge.ok[model11]}}
+                                </Button>
+                    <Button style="margin-left: 10px; margin-top: 10px;" @click="canclessss">
+                                    {{jsonLanguge.cancle[model11]}}
+                                </Button>
+                    </p>
+                    </Poptip>
+                    </Button>
+
+                    <i-select class="selects" :model.sync="model1" @on-change="langugeChange" style="width:80px">
+                        <i-option :value="0">English</i-option>
+                        <i-option :value="1">中文</i-option>
+                    </i-select>
+                </div>
+            </div>
+
+            <Table :row-class-name="rowClass" class="tableCss" height="250" highlight-row :columns="columns" :data="items" @on-row-click="onGroupRowClick" style="margin-top: 15px;">
+                <template slot-scope="{ row }" slot="OEE">
+                    <span>{{ row.OEE }}%</span>
+                </template>
+                <template slot-scope="{ row }" slot="FPY">
+                    <span>{{ row.FPY }}%</span>
+                </template>
+                <template slot-scope="{ row }" slot="Scrap">
+                    <span>{{ row.Scrap }}%</span>
+                </template>
+            </Table>
+
+            <table width="100%" bordercolor="white" border="1" style="border: 1p solid #fff; background-color: transparent;" class="a-table a-table1">
+                <thead>
+                    <tr>
+                        <th colspan="7">
+                            <div class="subtitle2">E170 clean room workshop production status</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, index) in ['title','target','actual']" :key="item">
+                        <td>{{ jsonLanguge['BZ'+(index+1)][model11] }}</td>
+                        <td v-for="o in BZData[0]" :key="o">{{ o[item] }}</td>
+                    </tr>
+                    <tr v-for="(item, index) in ['title','target','actual']" :key="item">
+                        <td>{{ jsonLanguge['BZ'+(index+1)][model11] }}</td>
+                        <td v-for="o in BZData[1]" :key="o">{{ o[item] }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div>
+
+                <div style="color: white;" class="subtitle"> {{detail.name}} {{jsonLanguge.titleDetail[model11]}}
+                </div>
+                <div style="display: flex;flex-wrap: nowrap;">
+                    <div style="flex: 1;">
+
+                        <table width="100%" bordercolor="white" border="1" style="border: 1p solid #fff; background-color: transparent;" class="vtop">
+                            <tr>
+                                <td style="padding: 10px;">
+                                    <div style="color: #c064f8;">
+                                        OEE Schedule -% </div>
+                                    <div style="font-size: 24px; text-align: center;display: flex; ">
+                                        <chart-pie :num="detail.OEE" style="flex: 0 0 100px;" :colors="OEEColor">
+                                        </chart-pie>
+                                        <div style="padding-top: 30px;">{{detail.OEE}}%</div>
+                                    </div>
+                                </td>
+                                <td style="padding: 10px;">
+                                    <div style="color: #c064f8;">
+                                        Total Downtime -Hours </div>
+
+                                    <div style="font-size: 24px; text-align: center;display: flex; ">
+                                        <div style="flex: 0 0 100px;"></div>
+                                        <div style="padding-top: 30px;">{{detail.DownTime}}h</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px;">
+                                    <div style="color: #c064f8;">
+                                        FPY -% </div>
+                                    <div style="font-size: 24px; text-align: center;display: flex; ">
+                                        <chart-pie :num="detail.FPY" style="flex: 0 0 100px;" :colors="FPYColor">
+                                        </chart-pie>
+                                        <div style="padding-top: 30px;">{{detail.FPY}}%</div>
+                                    </div>
+                                </td>
+                                <td style="padding: 10px;">
+                                    <div style="color: #c064f8;">
+                                        Scrap -% </div>
+                                    <div style="font-size: 24px; text-align: center;display: flex; ">
+                                        <chart-pie :num="detail.Scrap" style="flex: 0 0 100px;" :colors="ScrapColor">
+                                        </chart-pie>
+                                        <div style="padding-top: 30px;">{{detail.Scrap}}%</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="optionPies" style="flex: 0 0 500px;width: 500px; height: 300px; text-align: center;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <Modal v-model="modal1" :title="jsonLanguge.reFreshTitle[model11]" :cancelText="jsonLanguge.cancle[model11]" :okText="jsonLanguge.ok[model11]" @on-ok="ok" @on-cancel="cancel">
+        <div>
+            <div style="display: flex;">
+                <div style="width: 100px; text-align: right; line-height: 32px;"> {{ jsonLanguge.account[model11] }}
+                </div>
+                <Input v-model="emailAccount.username" style="width:300px;" />
+            </div>
+            <br />
+            <div style="display: flex;">
+                <div style="width: 100px; text-align: right; line-height: 32px;">
+                    {{ jsonLanguge.password[model11] }}
+                </div>
+                <Input type="password" v-model="emailAccount.password" placeholder="" style="width:300px;" />
+            </div>
+            <!-- <span style="line-height: 32px;"> {{jsonLanguge.timeInner[model11]}} </span>
+            <Input v-model="timeNumber" placeholder="default size" type="number" style="width:100px;" />
+            <span style="margin-left: 20px; line-height: 32px;"> {{jsonLanguge.time[model11]}} </span> -->
+        </div>
+    </Modal>
+
+    <Modal v-model="mailModel" :cancelText="jsonLanguge.cancle[model11]" :okText="jsonLanguge.ok[model11]" @on-ok="handleSubmit()" @on-cancel="close()" :title="jsonLanguge.mailConfig[model11]" width="800">
+
+
+        <div class="jiepu_email-edit">
+            <Form ref="formValidate" :label-width="50" class="clearfix">
+                <Row type="flex" :gutter="16" align="middle" style="margin-bottom: 16px;display: none;">
+                    <Col style="text-align: right;" span="7" v-text="'ID'">
+                    </Col>
+                    <Col span="15">
+                    <jci-number v-model="model.ID" placeholder="" :readonly="1"></jci-number>
+                    </Col>
+                </Row>
+
+                <Row type="flex" :gutter="16" align="middle" style="margin-bottom: 16px;">
+                    <Col style="text-align: right;" span="5" v-text="jsonLanguge.data17[model11]">
+                    </Col>
+                    <Col span="6">
+                    <TimePicker :open="open" v-model="model.DaySend" format="HH:mm" confirm></TimePicker>
+                    </Col>
+                </Row>
+
+
+
+                <Row type="flex" :gutter="16" align="middle" style="margin-bottom: 16px;">
+                    <Col style="text-align: right;" span="5" v-text="jsonLanguge.data18[model11]">
+                    </Col>
+                    <Col span="6">
+                    <Select v-model="model.WeekSend">
+                        <Option v-for="(item, index) in jsonLanguge.weeksArr[model11]" :value="index+1" :key="item">
+                            {{ item }}
+                        </Option>
+                    </Select>
+                    </Col>
+                    <Col span="6">
+                    <TimePicker :open="open" v-model="model.WeekSendTime" format="HH:mm" confirm></TimePicker>
+                    </Col>
+                </Row>
+
+
+                <Row type="flex" :gutter="16" align="middle" style="margin-bottom: 16px;">
+                    <Col style="text-align: right;" span="5" v-text="jsonLanguge.data19[model11]">
+                    </Col>
+
+                    <Col span="6">
+                    <Select v-model="model.MonthSend">
+                        <Option v-for="item in MonthDateRange" :value="item" :key="item">
+                            {{ item }}
+                        </Option>
+                    </Select>
+                    </Col>
+                    <Col span="6">
+                    <TimePicker :open="open" v-model="model.MonthSendTime" format="HH:mm" confirm></TimePicker>
+                    </Col>
+                </Row>
+
+
+                <Row type="flex" :gutter="16" align="middle" style="margin-bottom: 16px;">
+                    <Col style="text-align: right;" span="5" v-text="jsonLanguge.data21[model11]">
+                    </Col>
+
+                    <Col span="6">
+                    <DatePicker class="selects" type="datetime" format="yyyy-MM-dd HH:mm" @on-change="model.YearSend=$event" value-format="yyyy-MM-dd HH:mm" :placeholder="jsonLanguge.data22[model11]" v-model="model.YearSend"></DatePicker>
+                    </Col>
+                </Row>
+
+                <Row type="flex" :gutter="16" align="middle" style="margin-bottom: 16px;">
+                    <Col style="text-align: right;" span="5" v-text="jsonLanguge.data16[model11]">
+                    </Col>
+                    <Col span="6">
+                    <jci-input v-model="model.EmailSendUsername" :placeholder="jsonLanguge.data11[model11]" />
+                    </Col>
+                    <Col span="6">
+                    <jci-input v-model="model.EmailSendPassword" :placeholder="jsonLanguge.data12[model11]" />
+                    </Col>
+                    <Col span="6">
+                    <jci-input v-model="model.EmailHost" :placeholder="jsonLanguge.data10[model11]" />
+                    </Col>
+                </Row>
+
+                <Row type="flex" :gutter="16" align="middle" style="margin-bottom: 16px;">
+                    <Col style="text-align: right;" span="5" v-text="jsonLanguge.data13[model11]">
+                    </Col>
+                    <Col span="18">
+                    <jci-input v-model="model.EmailReceiveUsernames" type="textarea" :rows="4" placeholder="">
+                    </jci-input>
+                    <div style="margin-top: 5px;" v-text="jsonLanguge.TZ1[model11]"></div>
+                    </Col>
+                </Row>
+            </Form>
+        </div>
+
+
+    </Modal>
+
+
+    <!-- <Modal v-model="editData.flag" title="编辑" width="60" :loading="true" @on-ok="asyncOK">
+        <div class="edit_wrap">
+            <edit-template v-if="editData.flag" ref="edit" :isPage="false" :pageId="editData.id" :id="editData.id">
+            </edit-template>
+        </div>
+    </Modal> -->
+    <BackTop></BackTop>
+</div>

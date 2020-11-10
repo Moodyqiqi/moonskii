@@ -1,0 +1,101 @@
+<div class="settlement_rules-edit">
+    <Form ref="formValidate" :label-width="150" class="clearfix">
+        <FormItem label="ID">
+            <jci-number v-model="model.ID" placeholder="请输入ID" :readonly="1"></jci-number>
+        </FormItem>
+        <FormItem label="结算方式">
+            <jci-select url="sixiang/settlement_rules/getSettlementTypeSelect2" :model="model" :title="model.SettlementType_Title" name="settlement_rules_SettlementType" v-model="model.SettlementType"></jci-select>
+        </FormItem>
+        <FormItem label="结算规则">
+            <jci-select url="sixiang/settlement_rules/getRulTypeSelect2" :model="model" :title="model.RulType_Title" name="settlement_rules_RulType" v-model="model.RulType"></jci-select>
+        </FormItem>
+        <FormItem label="规则名称">
+            <jci-input v-model="model.Title" :readonly="1" />
+        </FormItem>
+        <FormItem label="出勤天数" v-if="(model.SettlementType == 1 && model.RulType == 3) || (model.SettlementType == 2 && model.RulType == 3)">
+            <jci-number v-model="model.AttendanceDays" placeholder="请输入出勤天数"></jci-number>
+        </FormItem>
+        <FormItem label="打卡天数" v-if="(model.SettlementType == 1 && model.RulType == 1) || (model.SettlementType == 2 && model.RulType == 1)">
+            <jci-number v-model="model.PunchInDays" placeholder="请输入打卡天数"></jci-number>
+        </FormItem>
+        <FormItem label="在职天数" v-if="(model.SettlementType == 1 && model.RulType == 2) || (model.SettlementType == 2 && model.RulType == 2)">
+            <jci-number v-model="model.WorkingDays" placeholder="请输入在职天数"></jci-number>
+        </FormItem>
+        <FormItem label="在职返" v-if="(model.SettlementType == 1 && model.RulType == 4) || (model.SettlementType == 2 && model.RulType == 4) || (model.SettlementType == 2 && model.RulType == 5)">
+            <jci-number v-model="model.DateWorking" placeholder="请输入在职返"></jci-number>
+        </FormItem>
+        <FormItem label="计费规则">
+            <div style=" border: 1px solid #ccc; padding: 8px;">
+                <div><span style="color: green; font-size: 38px; cursor: pointer;" @click="add">+</span></div>
+                <Row class="top_set">
+                    <!-- <i-col span="1" style="width:10%;"> 
+                            索引号
+                        </i-col> -->
+                    <i-col span="2" style="width:20%;">
+                        类型
+                    </i-col>
+                    <i-col span="3" style="width:30%;">
+                        截止日期
+                    </i-col>
+                    <i-col span="4" style="width:20%;">
+                        金额
+                    </i-col>
+                    <i-col span="5" style="width:20%;">
+                        操作
+                    </i-col>
+                </Row>
+
+                <Row class="top_set" v-for="item in ruleItems" style=" margin-bottom: 10px;">
+                    <!-- <i-col span="1" style="width:10%;"> 
+                          <div> {{item.index}}</div>
+                        </i-col> -->
+                    <i-col span="2" style="width:20%;">
+                        <Select v-model="item.Type" style="width:100px">
+                                <Option  :value="1" :key="1"> 按次发放</Option>
+                                <Option  :value="2" :key="2"> 离职截止</Option>
+                            </Select>
+                    </i-col>
+                    <i-col span="3" style="width:30%;">
+                        <jci-datepicker :disabled="item.Type == 2" v-model="item.Date" placeholder="" style="width:80%"></jci-datepicker>
+                    </i-col>
+                    <i-col span="4" style="width:20%;">
+                        <Input v-model="item.Money" placeholder="" style="width: 100px" />
+                    </i-col>
+                    <i-col span="5" style="width:20%;">
+                        <!-- <span  @click="edit(item)" style=" margin-right: 10px; cursor: pointer;"> <Icon type="ios-create-outline" style="color: blue;" />编辑</span> -->
+                        <span @click="removeMock(item)" style=" cursor: pointer;">  <Icon type="ios-trash"   style="color: red;"/>删除</span>
+                        <!-- <span  @click="removeMock(item)" style=" cursor: pointer;">  <Icon type="ios-trash"   style="color: red;"/>添加</span> -->
+                    </i-col>
+                </Row>
+                <!-- 添加的行 -->
+
+            </div>
+
+
+        </FormItem>
+        <!-- <FormItem label="删除标记">
+                <jci-switch v-model="model.Deleted" placeholder="请输入删除标记">删除标记</jci-switch>
+            </FormItem>
+            <FormItem label="创建时间">
+                <jci-datepicker v-model="model.CreateDate" type="datetime" placeholder="请输入创建时间"></jci-datepicker>
+            </FormItem>
+            <FormItem label="创建人">
+                <jci-number v-model="model.CreateUserID" placeholder="请输入创建人"></jci-number>
+            </FormItem>
+            <FormItem label="更新日期">
+                <jci-datepicker v-model="model.UpdateDate" type="datetime" placeholder="请输入更新日期"></jci-datepicker>
+            </FormItem>
+            <FormItem label="更新人">
+                <jci-number v-model="model.UpdateUserID" placeholder="请输入更新人"></jci-number>
+            </FormItem>
+            <FormItem label="所属公司">
+                <jci-number v-model="model.CompanyID" placeholder="请输入所属公司"></jci-number>
+            </FormItem> -->
+
+        <FormItem class="item-btn">
+            <Button type="primary" @click="handleSubmit()">提交</Button>
+            <Button type="primary" @click="close()">取消</Button>
+        </FormItem>
+    </Form>
+    <BackTop></BackTop>
+</div>
